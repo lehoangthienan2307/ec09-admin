@@ -1,0 +1,92 @@
+{{#section 'js_sidebar'}}
+    <script>
+        function categoryClick(CatID) {
+            if ($(".category-" + CatID).hasClass("is-active")) {
+                $(".category-" + CatID).removeClass("is-active");
+                $(".list-" + CatID).toggleClass("is-hidden");
+            } else {
+                $(".manual").removeClass("is-active");
+                $(".manual-list").removeClass("is-hidden").toggleClass("is-hidden");
+                $(".category-" + CatID).toggleClass("is-active");
+                $(".list-" + CatID).removeClass("is-hidden");
+            }
+        }
+        $('#text').keypress(function(event){
+            const keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                const action = $('#text').val();
+                const url = "/search/" + action;
+                $('#frmSearch').attr('action', url);
+                $('#frmSearch').submit();
+            }
+        });
+        $('#btnSearch').click(function(event){
+            const action = $('#text').val();
+            if (action !== '') {
+                const url = "/search/" + action;
+                $('#frmSearch').attr('action', url);
+                $('#frmSearch').submit();
+            }
+        });
+    </script>
+{{/section}}
+
+<nav class="navbar box" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="/public/logo/logo.png" >
+        </a>
+
+        <a
+                role="button"
+                class="navbar-burger"
+                aria-label="menu"
+                aria-expanded="false"
+                data-target="navbarBasicExample"
+        >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+
+            <div class="navbar-item" >
+                <a href="/admin/updateProduct"> 
+                 <strong>ADMIN DASHBOARD</strong>
+
+                </a>
+                
+                
+            </div>
+
+            
+
+        <div class="navbar-end">
+                <div class="navbar-item has-dropdown is-hoverable user">
+                    <a class="navbar-link">{{authAccount.name}}</a>
+                    <div class="navbar-dropdown">
+                        <p class="menu-label is-size-6 m-4">Thông tin</p>
+ 
+                        <a class="navbar-item {{#if isProfile}}has-background-success{{/if}}" href="/info/reviewProfile" >
+                            <i class="fa fa-user-edit mr-2"></i> Thông tin cá nhân
+                        </a>
+                    
+                     
+                        <hr class="navbar-divider" />
+
+                        <form action="/logout" method="post" id="frmLogout"></form>
+                        <a class="navbar-item" href="javascript: $('#frmLogout').submit();">
+                            <i class="fa fa-sign-out-alt mr-2"></i>
+                            Đăng xuất
+                        </a>
+
+                    </div>
+                </div>
+        
+
+        </div>
+    </div>
+</nav>

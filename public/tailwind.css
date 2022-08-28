@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* @layer utilities{
+    .sub-dropdown: :hover>.sub-dropdown-content{
+        opacity: 1;
+        visibility: visible;
+        top: 0;
+    }
+
+    .sub-dropdown:hover>a{
+        back
+    }
+} */
+.slick-slide {
+    margin: 0 10px;
+}
+/* the parent */
+.slick-list {
+    margin: 0 -10px;
+}

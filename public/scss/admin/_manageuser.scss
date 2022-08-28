@@ -1,0 +1,38 @@
+.email-title,
+.email-content,
+.rating-title,
+.rating-content,
+.time-title,
+.time-content {
+  @include breakpoint-down(small) {
+    display: none;
+  }
+  // @include breakpoint-up(medium) {
+  //   display: block;
+  // }
+}
+
+.time-content {
+  @include breakpoint-up(medium) {
+    min-width: 200px;
+  }
+}
+
+// .list-of-users,
+// .list-upgrade-requests {
+//   @include breakpoint-down(small) {
+//     padding: 0 1rem;
+//   }
+// }
+
+.downgrade-wrapper {
+  @include breakpoint-down(small) {
+    display: none;
+  }
+}
+.admin-wrapper {
+  @include breakpoint-down(small) {
+    width: fit-content;
+    margin: 0 auto;
+  }
+}

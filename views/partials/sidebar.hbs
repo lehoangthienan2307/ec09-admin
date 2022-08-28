@@ -1,0 +1,41 @@
+<div class="column is-2-tablet is-hidden-touch">
+    <aside class="menu is-size-6-tablet">
+        <p class="menu-label is-size-6"><strong>OPTION</strong></p>
+        <ul class="menu-list">
+          
+                <li>
+                    <a class="manual category  {{#if this.isUpdateProduct}}is-active{{/if}}" href="/admin/updateProduct">
+                        <i class="fa fa-caret-down mr-3" aria-hidden="true"></i>
+                        Quản lý sản phẩm
+                    </a>
+                
+                </li>
+                <li>
+                    <a class="manual category{{#if isUser}}is-active{{/if}}" href="/admin/Account">
+                        <i class="fa fa-caret-down mr-3" aria-hidden="true"></i>
+                        Quản lý người dùng
+                    </a>
+                
+                </li>
+
+                <li>
+                    <a class="manual category {{#if isActive}}is-active{{/if}}" href="/admin/manageOrder">
+                        <i class="fa fa-caret-down mr-3" aria-hidden="true"></i>
+                        Quản lý đơn hàng
+                    </a>
+                
+                </li>
+                 <li>
+                    <a class="manual category-{{CatID}} {{#if isActive}}is-active{{/if}}"  href="/admin/statistics/revenue">
+                        <i class="fa fa-caret-down mr-3" aria-hidden="true"></i>
+                        Thống kê doanh thu
+                    </a>
+                
+                </li>
+          
+        </ul>
+
+        
+      
+    </aside>
+</div>

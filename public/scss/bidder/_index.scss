@@ -1,0 +1,11 @@
+.bidder__wrapper {
+  padding: 0 1rem;
+  @include breakpoint-up(medium) {
+    padding: 0;
+  }
+}
+aside {
+  @include breakpoint-up(medium) {
+    padding-left: 0 !important;
+  }
+}

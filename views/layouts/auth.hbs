@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" href="/img/logo/bid.png">
+    <title>E Commerce Web</title>
+
+    
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="/css/mainStyle.css"/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/css/bulma-carousel.min.css"
+    />
+
+    <link
+            rel="stylesheet"
+            href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css"
+    />
+    {{{_sections.css}}}
+    {{{_sections.css_sellProduct}}}
+</head>
+<body>
+<div class="container.is-fullhd" style="display: flex; min-height: 100vh; flex-direction: column">
+    {{> header}}
+    <div class="columns box hero-body px-4 py-0">
+        <div class="column is-12-tablet is-12-mobile box">
+            {{{body}}}
+        </div>
+    </div>
+    {{> footer}}
+
+</div>
+
+
+<!--    SCRIPT-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Check for click events on the navbar burger icon
+        $(".navbar-burger").click(function () {
+            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+            $(".navbar-burger").toggleClass("is-active");
+            $(".navbar-menu").toggleClass("is-active");
+        });
+        $(".is-active").click(function () {
+            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+            if ($(".list").hasClass("is-hidden")) {
+                $(".list").removeClass("is-hidden");
+            } else $(".list").toggleClass("is-hidden");
+        });
+        $(".category > .navbar-link").click(function () {
+            if ($(".category > .navbar-dropdown").hasClass("is-hidden")) {
+                $(".category > .navbar-dropdown").removeClass("is-hidden");
+            } else $(".category > .navbar-dropdown").toggleClass("is-hidden");
+        });
+        $(".user > .navbar-link").click(function () {
+            if ($(".user > .navbar-dropdown").hasClass("is-hidden")) {
+                $(".user > .navbar-dropdown").removeClass("is-hidden");
+            } else $(".user > .navbar-dropdown").toggleClass("is-hidden");
+        });
+    });
+</script>
+
+<script>
+    $('#text').keypress(function(event){
+        const keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            const action = $('#text').val();
+            const url = "/search/"+action;
+            $('#frmSearch').attr('action', url);
+            $('#frmSearch').submit();
+        }
+    });
+</script>
+
+<script>
+    bulmaCarousel.attach(".carousel", {
+        slidesToScroll: 1,
+        slidesToShow: 2,
+        infinity: true,
+    });
+</script>
+{{{_sections.js}}}
+{{{_sections.js_login}}}
+{{{_sections.js_forgotPass}}}
+{{{_sections.js_datetime}}}
+{{{_sections.js_changePassword}}}
+{{{_sections.js_activeEmail}}}
+{{{_sections.js_showMessage}}}
+{{{_sections.js_sellProduct}}}
+{{{_section.js_sellProductImage}}}
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+{{#section "js_statistics"}}
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"
+  ></script>
+  <script src="/utils/chart.js"></script>
+  <script>
+    $('.addItem').on('click', function(e) { const id = $(this).data('id');
+    $('#txtProID').val(id); $('#frmAddItem').submit(); });
+  </script>
+{{/section}}
+
+<div>
+  
+  <div class="statistics__consumption">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card shadow mt-5">
+          <h3 class="card-header text-center bg-secondary text-white">Doanh thu
+            theo tháng</h3>
+          <div style="padding: 20px">
+            <span style="margin-right: 10px">Chọn năm</span>
+            <select
+              name="year"
+              id="select-year"
+              style="display: inline-block; width: fit-content"
+              class="form-control"
+              aria-label="Select year"
+            >
+              <option style="display: none;" value=""></option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <canvas id="myChart"></canvas>
+  </div>
+</div>

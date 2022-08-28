@@ -1,0 +1,93 @@
+{{#section 'loadmore'}}
+    <script>
+        let offset = 1;
+        function loadmore(){
+            $.getJSON(`/admin/loadmore?offset=${offset}`, function (data) {
+                const list = JSON.parse(JSON.stringify(data));
+                let html = "";
+                if(list.length ===0){
+                    $('.loadmore').toggleClass("is-hidden");
+                    return
+                }
+                for (let i = 0; i < data.length; i++) {
+                    html += "<tr class='has-text-centered'>";
+                    html += `<th>${data[i].ProID}</th>`;
+                    html += `<td>${data[i].ProName}</td>`;
+                    html += `<td>${data[i].Price}</td>`;
+                    html += `<th>${data[i].NameCatIDNext}</th>`;
+                    html += `<td>${data[i].Supplier}</td>`;
+                    html += `<form action="/admin/delProduct/${data[i].ProID}" method="post" id="frmDelProduct-${data[i].ProID}"></form>`;
+                    html += `<td><a href="javascript: $('#frmDelProduct-${data[i].ProID}').submit();">
+                                <button class="delete mt-2"></button>
+                            </a></td>`;
+                    html += "</tr>";
+                }
+             
+                document.getElementById("data").innerHTML += html;
+                offset = offset + 1;
+            });
+        }
+    </script>
+{{/section}}
+
+
+<div class="columns is-multiline is-mobile p-2">
+    <div class="column is-12">
+        <div class="card-header-title is-size-4-tablet is-size-5-mobile is-size-2-desktop has-text-danger-dark">
+            Danh sách Sản phẩm
+        </div>
+        <hr class="has-background-grey"/>
+    </div>
+
+    
+
+
+    <div class="is-12 column mt-0">
+        <div class="table-wrapper" style="overflow-x: auto">
+            <table class="table is-hoverable is-striped is-fullwidth is-bordered">
+                <div class="card-header-title is-size-3 has-text-success">
+                    Sản phẩm
+                       <a href="/admin/upload" class="button is-rounded is-small is-light is-success is-outlined ml-3">
+                        <span class="icon is-small">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <thead>
+                <tr class="has-text-centered">
+                    <th><abbr title="time">Mã sản phẩm</abbr></th>
+                    <th><abbr title="">Tên sản phẩm</abbr></th>
+                    <th><abbr title="">Giá hiện tại</abbr></th>
+                    <th><abbr title="">Thuộc danh mục</abbr></th>
+                    <th><abbr title="">Nhà cung cấp</abbr></th>
+                    <th><abbr title=""></abbr></th>
+                </tr>
+                </thead>
+
+                <tbody id="data">
+
+                {{#each this.listProduct}}
+                    <tr class="has-text-centered">
+                        <th>{{ProID}}</th>
+                        <td>{{ProName}}</td>
+                        <td>{{format_number Price}}</td>
+                        <th>{{NameCatIDNext}}</th>
+                        <td>{{Supplier}}</td>
+                        <form action="/admin/delProduct/{{ProID}}" method="post" id="frmDelProduct-{{ProID}}"></form>
+                        <td>
+                            <a href="javascript: $('#frmDelProduct-{{ProID}}').submit();">
+                                <button class="delete mt-2"></button>
+                            </a>
+                        </td>
+                    </tr>
+                {{/each}}
+
+
+                </tbody>
+            </table>
+            <div class="has-text-centered loadmore">
+                <a class="button is-primary is-outlined" onclick="loadmore();">Tải thêm...</a>
+            </div>
+        </div>
+    </div>
+</div>

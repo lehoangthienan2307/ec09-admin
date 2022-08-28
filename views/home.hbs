@@ -1,0 +1,206 @@
+{{#section 'js'}}
+    <script>
+        const listIDText = document.getElementById("listId").value;
+        const listID = listIDText.split(' ');
+        for (let i = 0; i < listID.length; i++) {
+            const dateInput = document.getElementById("dateInput" + listID[i]).value;
+            const date = dateInput.split(" ")[0];
+            const time = dateInput.split(" ")[1];
+            const day = date.split('/')[0];
+            const month = date.split('/')[1];
+            const year = date.split('/')[2];
+            const h = time.split(':')[0];
+            const m = time.split(':')[1];
+            let countDownDate = new Date(+year, +month - 1, +day, +h, +m, 0, 0).getTime();
+            let x = setInterval(function () {
+                // Get today's date and time
+                let now = new Date().getTime();
+                // Find the distance between now and the count down date
+                let distance = countDownDate - now;
+                // Time calculations for days, hours, minutes and seconds
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                // Display the result in the element with id="demo"
+                let countdown = '';
+                if (days != 0) {
+                    countdown += days + " ngày "
+                }
+                if (hours != 0) {
+                    countdown += hours + " giờ "
+                }
+                if (minutes != 0) {
+                    countdown += minutes + " phút "
+                }
+                countdown += seconds + " giây";
+                document.getElementById("dateEnd" + listID[i]).innerHTML = countdown;
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("dateEnd" + listID[i]).innerHTML = "Hết hạn"
+                }
+            }, 10);
+        }
+    </script>
+{{/section}}
+<input type="text" value="{{this.listID}}" id="listId" class="is-hidden">
+<div class="columns is-multiline is-mobile p-2">
+    <div class="column is-12 p-2">
+        <section class="section">
+            <div class="card-header-title is-size-3 is-size-4-tablet is-size-5-mobile m-3">
+
+                Top 5 Sản phẩm gần kết thúc khuyến mãi&nbsp;
+                <figure class="image is-32x32">
+                    <img src="/public/logo/expired.png">
+                </figure>
+
+            </div>
+            <div id="slider" style="overflow: hidden">
+                <!-- Start Carousel -->
+                <div class="carousel">
+
+                    {{#each this.topClose}}
+                        <div class="item-{{ProID}} mx-2">
+                            <!-- Slide Content -->
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-16by9 is-covered">
+                                        <a href="#">
+                                            <img
+                                                    src="/public/product/{{ProID}}/1.png"
+                                                    alt="{{ProName}}"
+                                            />
+
+                                        </a>
+                                    </figure>
+                                </div>
+
+                                <div class="card-content is-size-7-mobile">
+                                    <p class="card-header-title is-size-4 is-size-6-mobile p-0 mb-2 "style="height: 60px">
+                                        {{ProName}}
+                                    </p>
+                                    <strong class="is-block has-text-info-dark"> Giá hiện tại: <span
+                                            class="has-text-danger-dark">{{format_number Price}}</span></strong>
+                                   
+                                    <hr class="navbar-divider"/>
+                                    <div class="content">
+
+                                        <time datetime="2016-1-1" class="is-block"><strong class="has-text-primary-dark">Kết thúc giảm giá:</strong>
+                                            <input class="is-hidden" id="dateInput{{ProID}}" value="{{DateEndDis}}">
+                                            <span class="has-text-danger" id="dateEnd{{ProID}}"></span>
+                                        </time>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {{/each}}
+
+
+                </div>
+                <!-- End Carousel -->
+            </div>
+        </section>
+    </div>
+
+    <div class="column is-12 p-2">
+        <section class="section">
+            <div class="card-header-title is-size-3 is-size-4-tablet is-size-5-mobile m-3">
+                Top 5 Sản phẩm bán chạy nhất&nbsp;
+                <figure class="image is-32x32">
+                    <img src="/public/logo/best_seller.png">
+                </figure>
+            </div>
+            <div id="slider" style="overflow: hidden">
+                <!-- Start Carousel -->
+                <div class="carousel">
+
+                    {{#each this.topSale}}
+                        <div class="item-{{ProID}} mx-2">
+                            <!-- Slide Content -->
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-16by9 is-covered">
+                                        <a href="#">
+                                            <img
+                                                    src="/public/product/{{ProID}}/1.png"
+                                                    alt="{{ProName}}"
+                                            />
+
+                                        </a>
+                                    </figure>
+                                </div>
+
+                                <div class="card-content is-size-7-mobile">
+                                    <p class="card-header-title is-size-4 is-size-6-mobile p-0 mb-2" style="height: 60px">
+                                        {{ProName}}
+                                    </p>
+                                    <strong class="is-block has-text-info-dark"> Giá hiện tại: <span
+                                            class="has-text-danger-dark">{{format_number Price}}</span></strong>
+                                    
+                                    <hr class="navbar-divider"/>
+                                    <div class="content">
+                                       
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {{/each}}
+
+
+                </div>
+                <!-- End Carousel -->
+            </div>
+        </section>
+    </div>
+
+    <div class="column is-12 p-2">
+        <section class="section">
+            <div class="card-header-title is-size-3 is-size-4-tablet is-size-5-mobile m-3">
+                Top 5 Sản phẩm được yêu thích nhất&nbsp;
+                <figure class="image is-32x32">
+                    <img src="/public/logo/fire.png">
+                </figure>
+            </div>
+            <div id="slider" style="overflow: hidden">
+                <!-- Start Carousel -->
+                <div class="carousel">
+                    {{#each this.topCommended}}
+                        <div class="item-{{ProID}} mx-2">
+                            <!-- Slide Content -->
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-16by9 is-covered">
+                                        <a href="/product/detail/{{ProID}}">
+                                            <img
+                                                    src="/public/product/{{ProID}}/1.png"
+                                                    alt="{{ProName}}"
+                                            />
+
+                                        </a>
+                                    </figure>
+                                </div>
+
+                                <div class="card-content is-size-7-mobile">
+                                    <p class="card-header-title is-size-4 is-size-6-mobile p-0 mb-2" style="height: 60px">
+                                        {{ProName}}
+                                    </p>
+                                    <strong class="is-block has-text-info-dark"> Giá hiện tại: <span
+                                            class="has-text-danger-dark">{{format_number Price}}</span></strong>
+                                    
+                                    <hr class="navbar-divider"/>
+                                    <div class="content">
+                                    
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+                <!-- End Carousel -->
+            </div>
+        </section>
+    </div>
+</div>

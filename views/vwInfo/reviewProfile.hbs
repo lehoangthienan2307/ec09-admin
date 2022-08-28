@@ -1,0 +1,160 @@
+{{#section 'css'}}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+{{#section 'js_datetime'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            referrerpolicy="origin"></script>
+    <script>
+        $('#frmChangeInfo').on('submit', function (e) {
+            e.preventDefault();
+            const name = $('#txtName').val();
+            const address = $('#txtAddress').val();
+            const dob = $('#datetimepicker').val();
+            const email = $('#txtEmail').val();
+            $.getJSON(`/account/is-exist?email=${email}`, function (data) {
+                if (data === false) {
+                    if ($('#check-email').hasClass("is-hidden")) {
+                        $('#check-email').removeClass("is-hidden");
+                    }
+                    return;
+                } else {
+                    if (name === '') {
+                        if ($('#check-name').hasClass("is-hidden")) {
+                            $('#check-name').removeClass("is-hidden");
+                        }
+                    } else {
+                        if (!$('#check-name').hasClass("is-hidden")) {
+                            $('#check-name').toggleClass("is-hidden");
+                        }
+                    }
+                    if (address === '') {
+                        if ($('#check-address').hasClass("is-hidden")) {
+                            $('#check-address').removeClass("is-hidden");
+                        }
+                    } else {
+                        if (!$('#check-address').hasClass("is-hidden")) {
+                            $('#check-address').toggleClass("is-hidden");
+                        }
+                    }
+                    if (dob === '') {
+                        if ($('#check-dob').hasClass("is-hidden")) {
+                            $('#check-dob').removeClass("is-hidden");
+                        }
+                    } else {
+                        if (!$('#check-dob').hasClass("is-hidden")) {
+                            $('#check-dob').toggleClass("is-hidden");
+                        }
+                    }
+                    if (name === '' || dob === '' || address === '') {
+                        return;
+                    }
+                    $('#frmChangeInfo').off('submit').submit();
+                }
+            });
+        });
+        $(':input[type="submit"]').prop('disabled', true);
+        $('input[type="text"]').keyup(function () {
+            if ($(this).val() != '') {
+                $(':input[type="submit"]').prop('disabled', false);
+            }
+        });
+        $('input[type="email"]').keyup(function () {
+            if ($(this).val() != '') {
+                $(':input[type="submit"]').prop('disabled', false);
+            }
+        });
+        $('#datetimepicker').datetimepicker({
+            timepicker: false,
+            format: 'd/m/Y',
+            mask: true,
+        });
+    </script>
+{{/section}}
+<form id="frmChangeInfo" method="post">
+    <div class="has-text-centered">
+        <div class="column is-4 is-inline-block box my-5">
+            <div class="card-header-title is-inline-block is-size-4-tablet is-size-4-mobile">THÔNG TIN TÀI KHOẢN</div>
+            <div class="field has-text-left">
+                <label class="label">Họ tên</label>
+                <div class="control">
+                    <input class="input" id="txtName" name="name" type="text" value="{{this.user.name}}"/>
+                </div>
+                <p class="help is-danger is-hidden" id="check-name">Chưa điền họ tên</p>
+            </div>
+
+            <div class="field has-text-left">
+                <label class="label">Địa chỉ</label>
+                <div class="control">
+                    <input class="input" id="txtAddress" name="address" type="text" value="{{this.user.address}}"/>
+                </div>
+                <p class="help is-danger is-hidden" id="check-address">Chưa điền địa chỉ</p>
+            </div>
+
+            <div class="field has-text-left">
+                <label class="label">Email</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input
+                            class="input"
+                            id="txtEmail"
+                            name="email"
+                            type="email"
+                            value="{{this.user.email}}"
+                    />
+                    <span class="icon is-small is-left">
+                  <i class="fa fa-envelope"></i>
+                </span>
+                    <p class="help is-danger is-hidden" id="check-email">Email đã tồn tại</p>
+                </div>
+                {{#if this.user.isVerify}}
+                {{else}}
+                    <a class="button is-small is-danger is-inverted"
+                       style="float: right"
+                       href="/account/activeEmail" type="button">
+                        Xác thực email
+                    </a>
+                {{/if}}
+            </div>
+
+
+            <div class="field has-text-left">
+                <label class="label" for="stepPrice">Ngày sinh</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input
+                            class="input"
+                            type="text"
+                            name="dob"
+                            id="datetimepicker"
+                            name="dayOfBirth"
+                            value={{format_date this.user.dob}}
+                    />
+                    <span class="icon is-small is-left">
+                  <i class="fa fa-calendar-day"></i>
+                </span>
+                    <span class="icon is-small is-right">
+                </span>
+                </div>
+                <p class="help is-danger is-hidden" id="check-dob">Chưa chọn ngày sinh</p>
+            </div>
+
+           
+        
+
+            <div class="field is-grouped is-justify-content-center mt-5">
+                <div class="control">
+                    <button type="submit" class="button is-link has-background-success" id="updateBtn">
+                        Cập nhật
+                    </button>
+                </div>
+                <div class="control">
+                    <a class="button is-link has-background-danger-dark" href="/account/changePassword"
+                       type="button">
+                        Đổi mật khẩu
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+</form>

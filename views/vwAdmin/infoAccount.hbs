@@ -1,0 +1,211 @@
+{{#section 'loadmore_user'}}
+    <script>
+        let offset = 1;
+        function loadmore_user(){
+            $.getJSON(`/admin/loadmoreUser?offset=${offset}`, function (data) {
+                const list = JSON.parse(JSON.stringify(data));
+                let html = "";
+                if(list.length === 0){
+                    $('.loadmore_user').toggleClass("is-hidden");
+                    return
+                }
+                for (let i = 0; i < list.length; i++) {
+                    html += `<tr class="has-text-centered">
+                        <th>
+                            <p>
+                                <strong><a>#${list[i].email}</a></strong>
+                            </p>
+                        </th>
+
+                        <td>${list[i].UserID}</td>
+                        <td>${list[i].name}</td>
+                        <td>${list[i].address}</td>
+                        <td>${list[i].phone}</td>
+                        <td>`;
+                  
+                    html += `</td>
+                        <td>
+                            
+                            <form action="/admin/Account/lock/${list[i].email}" method="post"
+                                  id="lock-${list[i].email}"></form>
+                            <span>
+                                    
+                                    <a href="javascript: $("#lock-${list[i].email}").submit();"
+                                       class="button is-size-7 is-rounded is-light">
+                                        <span class="is-small">
+                                            <i class="fa fa-lock has-text-danger-dark"></i>
+                                        </span>
+                                    </a>
+                                </span>
+                        </td>
+                        <td>
+                            <form action="/admin/Account/delete/${list[i].email}" method="post"
+                                  id="delete-${list[i].email}"></form>
+                            <a href="javascript: $("#delete-${list[i].email}").submit();">
+                                <button class="delete mt-1 ml-2"></button>
+                            </a>
+                        </td>
+                    </tr>`;
+                }
+                // Appending the data below old data in <tbody> tag
+                document.getElementById("data_user_account").innerHTML += html;
+                offset = offset+ 1;
+            });
+        }
+    </script>
+{{/section}}
+
+
+{{#section 'js'}}
+    <script>
+        $.getJSON(`/admin/Account/hasAccountLock`, function (data) {
+            if (data === false) {
+                if (!$('#accountLock').hasClass("is-hidden")) {
+                    $('#accountLock').toggleClass("is-hidden");
+                }
+            } else {
+                if ($('#accountLock').hasClass("is-hidden")) {
+                    $('#accountLock').removeClass("is-hidden");
+                }
+            }
+        });
+    </script>
+    <script>
+        function modal_announce() {
+            $('.modal_announce').toggleClass("is-active")
+        };
+        function close_modal() {
+            $('.modal_announce').removeClass("is-active")
+        };
+    </script>
+{{/section}}
+<div class="columns is-multiline is-mobile p-2">
+   
+    <div class="column is-12">
+        <div class="card-header-title is-size-4-tablet is-size-5-mobile is-size-2-desktop has-text-danger-dark">
+            Danh sách tài khoản trong hệ thống
+        </div>
+        <hr class="has-background-grey"/>
+    </div>
+
+    
+    <div class="is-12 column mt-0">
+        <div class="table-wrapper" style="overflow-x: auto">
+            <table class="table is-hoverable is-striped is-fullwidth is-bordered">
+                <div class="card-header-title is-size-3 has-text-success">
+                    Tài khoản USER
+                </div>
+                <thead>
+                <tr class="has-text-centered">
+                    <th><abbr title="">Tài khoản</abbr></th>
+                    <th><abbr title="">Họ tên</abbr></th>
+                    <th><abbr title="">Địa chỉ</abbr></th>
+                    <th><abbr title="">Phone</abbr></th>
+                    <th><abbr title="">Khóa</abbr></th>
+                    <th><abbr title="">Xóa</abbr></th>
+                </tr>
+                </thead>
+
+                <tbody id="data_user_account">
+                    {{#each this.list}}
+                        <tr class="has-text-centered">
+                            <th>
+                                <p>
+                                    <strong><a>#{{email}}</a></strong>
+                                </p>
+                            </th>
+                            <td>{{name}}</td>
+                            <td>{{address}}</td>
+                            <td>{{phone}}</td>
+                           
+                            <td>
+                                
+                                <form action="/admin/Account/lock/{{email}}" method="post"
+                                      id="lock-{{email}}"></form>
+                                <span>
+                    
+
+                                        <a href="javascript: $('#lock-{{email}}').submit();"
+                                           class="button is-size-7 is-rounded is-light">
+                                            <span class="is-small">
+                                                <i class="fa fa-lock has-text-danger-dark"></i>
+                                            </span>
+                                        </a>
+                                    </span>
+                            </td>
+                            <td>
+                                <form action="/admin/Account/delete/{{email}}" method="post"
+                                      id="delete-{{email}}"></form>
+                                <a href="javascript: $('#delete-{{email}}').submit();">
+                                    <button class="delete mt-1 ml-2"></button>
+                                </a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+            <div class="has-text-centered loadmore_seller">
+                <a class="button is-primary is-outlined" onclick="loadmore_seller();">Tải thêm...</a>
+            </div>
+
+        </div>
+    </div>
+
+    
+
+    <div class="is-12 column mt-0" id="accountLock">
+        <div class="table-wrapper" style="overflow-x: auto">
+            <table class="table is-hoverable is-striped is-fullwidth is-bordered">
+                <div class="card-header-title is-size-3 has-text-success">
+                    Tài khoản đã bị khóa
+                </div>
+                <thead>
+                <tr class="has-text-centered">
+                    <th><abbr title="">Tài khoản</abbr></th>
+                    <th><abbr title="">Họ tên</abbr></th>
+                    <th><abbr title="">Địa chỉ</abbr></th>
+                    <th><abbr title="">Phone</abbr></th>
+                    <th><abbr title="">Mở khóa</abbr></th>
+                    <th><abbr title="">Xóa</abbr></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {{#each this.listLockAccount}}
+                    <tr class="has-text-centered">
+                        <th>
+                            <p>
+                                <strong><a>#{{email}}</a></strong>
+                            </p>
+                        </th>
+                        <td>{{name}}</td>
+                        <td>{{address}}</td>
+                        <td>{{phone}}</td>
+                     
+                        <td>
+                            <form action="/admin/Account/unlock/{{email}}" method="post"
+                                  id="unlock-{{email}}"></form>
+                            <span>
+                                    <a href="javascript: $('#unlock-{{email}}').submit();"
+                                       class="button is-size-7 is-rounded is-light">
+                                        <span class="is-small">
+                                            <i class="fa fa-unlock has-text-success-dark"></i>
+                                        </span>
+                                    </a>
+                                </span>
+                        </td>
+                        <td>
+                            <form action="/admin/Account/delete/{{email}}" method="post"
+                                  id="delete-{{email}}"></form>
+                            <a href="javascript: $('#delete-{{email}}').submit();">
+                                <button class="delete mt-1 ml-2"></button>
+                            </a>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

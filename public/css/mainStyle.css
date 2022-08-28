@@ -1,0 +1,32 @@
+.main {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.section {
+    flex: 1;
+}
+
+.navbar-item.is-mega {
+    position: static;
+}
+
+.is-mega-menu-title {
+    margin-bottom: 0;
+    padding: .375rem 1rem;
+}
+
+.card-hover:hover{
+    transform: scale(1.05);
+}
+
+.card-content > ul{
+    list-style-type: square;
+}
+
+.btn-primary {
+    color: #7cc;
+    background-color: #7cc;
+    border-color: #5bc2c2
+}
