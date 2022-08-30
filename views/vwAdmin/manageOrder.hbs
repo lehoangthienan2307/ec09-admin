@@ -1,0 +1,100 @@
+{{#section 'load_order'}}
+    <script>
+        function load_order(){
+            $.getJSON(`/admin/order`, function (data) {
+                const list = JSON.parse(JSON.stringify(data));
+                let html = "";
+                if(list.length === 0){
+                    $('.load_order').toggleClass("is-hidden");
+                    return
+                }
+                for (let i = 0; i < list.length; i++) {
+                    html += `<tr class="has-text-centered">
+                        <th>
+                            <p>
+                                <strong><a>#${list[i].OrderID}</a></strong>
+                            </p>
+                        </th>
+
+                        <td>${list[i].Total}</td>
+                        <td>${list[i].method}</td>
+                        <td>${list[i].email}</td>
+                        <td>`;
+                  
+                    html += `</td>
+                        <td>
+                            
+                            <form action="/admin/order/confirm/${list[i].OrderID}" method="post"
+                                  id="formConfirm-${list[i].OrderID}"></form>
+                            <span>
+                                    
+                                    <a href="javascript: $("#frmConfirm-${list[i].OrderID}").submit();"
+                                       class="button is-size-7 is-rounded is-light">
+                                        <span class="is-small">
+                                            <i class="fa fa-lock has-text-danger-dark"></i>
+                                        </span>
+                                    </a>
+                                </span>
+                        </td>
+                    </tr>`;
+                }
+                // Appending the data below old data in <tbody> tag
+                document.getElementById("data_order").innerHTML += html;
+ 
+            });
+        }
+    </script>
+{{/section}}
+
+
+
+
+<div class="columns is-multiline is-mobile p-2">
+    <div class="column is-12">
+        <div class="card-header-title is-size-4-tablet is-size-5-mobile is-size-2-desktop has-text-danger-dark">
+            Danh sách Đơn hàng chờ duyệt
+        </div>
+        <hr class="has-background-grey"/>
+    </div>
+
+    
+
+
+    <div class="is-12 column mt-0">
+        <div class="table-wrapper" style="overflow-x: auto">
+            <table class="table is-hoverable is-striped is-fullwidth is-bordered">
+                
+                <thead>
+                <tr class="has-text-centered">
+                    <th><abbr title="time">Mã đơn hàng</abbr></th>
+                    <th><abbr title="">Tổng tiền</abbr></th>
+                    <th><abbr title="">Hình thức thanh toán</abbr></th>
+                    <th><abbr title="">email</abbr></th>
+                    <th><abbr title="">Duyệt</abbr></th>
+                </tr>
+                </thead>
+
+                <tbody id="data">
+
+                {{#each this.list}}
+                    <tr class="has-text-centered">
+                        <th>{{OrderID}}</th>
+                        <td>{{format_number Total}}</td>
+                        <td>{{method}}</td>
+                        <th>{{email}}</th>
+                        <form action="/admin/order/confirm/{{OrderID}}" method="post" id="frmConfirm-{{OrderID}}"></form>
+                        <td>
+                            <a href="javascript: $('#frmConfirm-{{OrderID}}').submit();">
+                                <button class="delete mt-2"></button>
+                            </a>
+                        </td>
+                    </tr>
+                {{/each}}
+
+
+                </tbody>
+            </table>
+          
+        </div>
+    </div>
+</div>

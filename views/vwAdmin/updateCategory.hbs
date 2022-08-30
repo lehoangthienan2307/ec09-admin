@@ -1,0 +1,99 @@
+
+
+<div class="columns is-multiline is-mobile p-2">
+    <div class="column is-12">
+        <div class="card-header-title is-size-4-tablet is-size-5-mobile is-size-2-desktop has-text-danger-dark">
+            Danh sách danh mục 
+        </div>
+        <hr class="has-background-grey"/>
+    </div>
+
+    <div class="is-12 column mt-0">
+        <div class="table-wrapper" style="overflow-x: auto">
+            <table class="table is-hoverable is-striped is-fullwidth is-bordered">
+                <div class="card-header-title is-size-3 has-text-success">
+                    Danh mục chính
+                    <a href="/admin/updateCategory" class="button is-rounded is-small is-light is-success is-outlined ml-3">
+                        <span class="icon is-small">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <thead>
+                <tr class="has-text-centered">
+                    <th><abbr title="">Mã danh mục</abbr></th>
+                    <th><abbr title="">Tên danh mục</abbr></th>
+                    <th><abbr title=""></abbr></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {{#each this.listCategoryParent}}
+                    <tr class="has-text-centered">
+                        <th>{{CatID}}</th>
+                        <td>{{CatName}}</td>
+                        <form action="/admin/delCat/{{CatID}}" method="post" id="frmDelCat-{{CatID}}"></form>
+                        <td>
+                            <a href="/admin/updateCategory/patchMainCat/{{CatID}}" class="button is-size-7 is-rounded is-light">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <a href="javascript: $('#frmDelCat-{{CatID}}').submit();">
+                                <button class="delete mt-1 ml-3"></button>
+                            </a>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="is-12 column mt-0">
+        <div class="table-wrapper" style="overflow-x: auto">
+            <table class="table is-hoverable is-striped is-fullwidth is-bordered">
+                <div class="card-header-title is-size-3 has-text-success">
+                    Danh mục phụ
+                    <a href="/admin/updateCategory/addSub" class="button is-rounded is-small is-light is-success is-outlined ml-3">
+                        <span class="icon is-small">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+                <thead>
+                <tr class="has-text-centered">
+                    <th><abbr title="">Mã danh mục phụ</abbr></th>
+                    <th><abbr title="">Tên danh mục phụ</abbr></th>
+                  
+                    <th><abbr title=""></abbr></th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {{#each this.listCategoryNext}}
+                    <tr class="has-text-centered">
+                        <th>{{CatID}}</th>
+                        <td>{{CatName}}</td>
+                        <form action="/admin/delCatNext/{{CatID}}" method="post"
+                              id="frmDelCatNext-{{CatIDNext}}"></form>
+                        <td>
+                            <a href="/admin/updateCategory/patchSubCat/{{CatID}}" class="button is-size-7 is-rounded is-light">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <a href="javascript: $('#frmDelCatNext-{{CatID}}').submit();">
+                                <button class="delete mt-1 ml-2"></button>
+                            </a>
+                        </td>
+                    </tr>
+                {{/each}}
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    
+</div>

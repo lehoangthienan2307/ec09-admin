@@ -7,6 +7,7 @@ import numeral from "numeral";
 import fs from 'fs';
 import categoryModel from "../model/category.model.js";
 import managerModel from '../model/manager.model.js'
+import orderModel from '../model/order.model.js'
 import sendMail from "../utils/sendMail.js";
 
 const router = express.Router();
@@ -30,7 +31,6 @@ router.get('/Account', async function (req, res) {
     const list = await userModel.findAll();
     const listLockAccount = await userModel.findBlockAccount();
 
-
     res.render('vwAdmin/infoAccount', {
         layout: 'main',
         isUser: true,
@@ -40,15 +40,11 @@ router.get('/Account', async function (req, res) {
     
     });
 });
+
 router.post('/Account/lock/:email', async function (req, res) {
     const email = req.params.email;
     await userModel.lockAccount(email);
-
     const user = await userModel.findByEmail(email);
-    const content = 'Tài khoản ' + user.email + ' của bạn đã bị khóa. Bạn sẽ không thể đăng nhập vào hệ thống. ' +
-        'Vui lòng liên hệ lại chúng tôi đễ biết thêm chi tiết';
-    sendMail(user.email, content);
-
     const url = req.headers.referer || '/';
     res.redirect(url);
 });
@@ -56,12 +52,7 @@ router.post('/Account/lock/:email', async function (req, res) {
 router.post('/Account/delete/:email', async function (req, res) {
     const email = req.params.email;
     const user = await userModel.findByEmail(email);
-    
-    const content = 'Tài khoản #' + user.email + ' của bạn đã bị xóa khỏi hệ thống. Bạn sẽ không thể đăng nhập vào hệ thống. ' +
-        'Vui lòng liên hệ lại chúng tôi đễ biết thêm chi tiết';
-    sendMail(user.email, content);
     await userModel.deleteAccount(email);
-
     const url = req.headers.referer || '/';
     res.redirect(url);
 });
@@ -71,10 +62,6 @@ router.post('/Account/unlock/:username', async function (req, res) {
     await userModel.unlockAccount(email);
 
     const user = await userModel.findByEmail(email);
-    const content = 'Tài khoản #' + user.email + ' của bạn đã được mở khóa. Bạn đã có thể đăng nhập vào hệ thống. ' +
-        'Cảm ơn bạn đã sử dụng hệ thống của chúng tôi.';
-    sendMail(user.email, content);
-
     const url = req.headers.referer || '/';
     res.redirect(url);
 });
@@ -110,6 +97,24 @@ router.get('/loadmore', async function (req, res) {
 });
 
 
+router.post('/order/confirm/:OrderID', async function (req, res) {
+    const OrderID= req.params.OrderID
+    await orderModel.updateState(OrderID, 'Đã duyệt')
+    const url = req.headers.referer || '/';
+    res.redirect(url);
+});
+
+router.get('/order', async function (req, res) {
+    const list = await orderModel.getHistoryOrder('Đang chờ xác nhận');
+
+    res.render('vwAdmin/manageOrder', {
+        layout: 'main',
+        isEmpty: list.length === 0,
+        list,
+    
+    });
+});
+
 
 router.get('/loadmoreUser', async function (req, res) {
     const offset = req.query.offset;
@@ -118,13 +123,24 @@ router.get('/loadmoreUser', async function (req, res) {
     res.json(list);
 });
 
-router.get("/statistics/revenue", async function (req, res) {
-    res.render("vwAdmin/statistics");
-  });
-  router.get("/statistics/revenue", async function (req, res) {
-    let list = await managerModel.getMonthRevenue();
-    res.json(list[0]);
-  });
+router.get('/updateCategory', async function (req, res) {
+    const listCategory = await categoryModel.findAll();
+    const listCategoryNext = await categoryModel.findCategoryNext();
+    const listCategoryParent = await categoryModel.findCategoryParent();
+
+
+    res.render('vwAdmin/updateCategory', {
+        layout:'main.hbs',
+        isAdmin: true,
+        isUpdateCategory: true,
+        listCategory,
+        listCategoryNext,
+        listCategoryParent
+    });
+});
+
+
+
   
 
 export default router;
