@@ -15,6 +15,14 @@ async findCategoryNext() {
     return listsub;
 },
 
+async findByCatIDNext(CatIDNext) {
+
+  if (CatIDNext === null)
+      return null;
+
+  const Cat = await db('category').where({CatID: CatIDNext})
+  return Cat[0].CatNextName;
+},
 
 
 async findCategoryParent() {
